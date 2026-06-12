@@ -285,3 +285,177 @@ If the session used `--project-dir`, mockup files persist in `.superpowers/brain
 
 - Frame template (CSS reference): `scripts/frame-template.html`
 - Helper script (client-side): `scripts/helper.js`
+
+---
+
+## V2 Worked Example: "Add password reset to the login page"
+
+A single walkthrough of brainstorming v2 applied to a real prompt. Shows the senior-dev pattern: read first, probe, push back when warranted, propose 2-3 options, fail-mode pass, then spec. All 11 phases in order.
+
+> **User prompt:** "I need to add a password reset to the login page. Can you help?"
+
+### Phase 0 — Scope-risk profile
+
+> 30-second heuristic: scope = small (single feature, well-known pattern). Risk = medium (auth surface, security implications, email deliverability, user enumeration, rate limiting).
+
+Risk = medium, not low. Even a "simple" password reset has security implications. We will run all 11 phases; we will not skip the failure-mode pass.
+
+### Phase 1 — Data First
+
+> Read before asking. Cite files.
+
+Before saying anything, read:
+- `src/auth/login.ts` — current login flow, password handling
+- `src/auth/users.ts` — user model, hashing
+- `src/mail/send.ts` — email sender
+- `package.json` — confirm bcrypt, jwt, prisma already installed
+- `tests/auth/login.test.ts` — current test patterns
+
+What I find (cited):
+- Login is at `src/auth/login.ts:42`, uses bcrypt with cost 12
+- Email sender at `src/mail/send.ts:18` supports templates
+- Tests use vitest + supertest, mock external services in `tests/mocks/`
+- No existing token/reset primitives — this is greenfield
+
+### Phase 2 — Stated vs real problem
+
+> The user asked for "password reset." What do they actually need?
+
+The stated problem: a reset link flow.
+Probable real problem: a recovery path that doesn't compromise the existing login. Sub-probes:
+- Are they worried about support tickets for locked-out users? (likely yes)
+- Is there a current workaround? (maybe manual SQL reset)
+- What's the rollout expectation — internal first, or production on day one?
+
+I ask the user the support-tickets sub-probe (the one that most shapes the design).
+
+> "Is the main pain user lockouts, or is it security-driven (compelled rotation, breach response)?"
+
+User answer: "User lockouts. About 15 tickets a week."
+
+### Phase 3 — Principles audit
+
+> Cite 2-4 principles, not all 10.
+
+Inline citations in my next message:
+- Following *Look before you leap* (read codebase first) — done in Phase 1.
+- Following *Make the implicit explicit* — a "reset link" hides: token entropy, expiration, single-use enforcement, rate limiting, user enumeration resistance.
+- Following *Test the boundaries, not the path* — happy path is easy; the security tests (expired token, reused token, rate limit, enumeration) are where the design is judged.
+
+That's 3. Not 10. Per principle #4 (Pick the right tool for the job — i.e. don't overcite), 2-4 is right.
+
+### Phase 4 — Question taxonomy
+
+> 5 types: fact-finding, constraint, decision, tradeoff, clarification. Aim for <7 total.
+
+I have 2 questions so far (one in Phase 2 + the answered support-tickets probe). I add 2 more:
+
+1. **Constraint:** "Email-only, or SMS fallback too?" (constraint)
+2. **Tradeoff:** "Token validity window — 15 min (more secure) or 1 hour (fewer support tickets)?" (tradeoff)
+
+That's 4 total. Under the 7-question cap.
+
+### Phase 5 — Pushback when warranted
+
+> 4-step: name concern → cite evidence → propose alternative → defer to user.
+
+The user said "to the login page" in their prompt. I notice there's no clear placement reason — the reset is its own flow, not a sub-feature of login. I push back:
+
+> "Worth questioning: should the reset UI live on the login page, or get its own `/forgot` route? Putting it on login mixes recovery and primary auth, makes the login screen busier, and makes the reset link shareable from the login page. Cleaner is a dedicated `/forgot` (request) and `/reset?token=...` (confirm) flow. Tradeoff: two extra routes to maintain. Want me to do `/forgot` or do you have a reason it has to live on login?"
+
+The user agrees to the dedicated routes. Pushback was warranted (mixed concerns) and I cited a reason (cleaner separation).
+
+### Phase 6 — 2-3 approaches with tradeoffs
+
+> 5-col table: Approach, Pros, Cons, Cost, Risk.
+
+| Approach | Pros | Cons | Cost | Risk |
+|---|---|---|---|---|
+| **A. Signed token in URL, single table column** | Simplest. Self-contained. No email infra changes. | Token in URL can leak via referrer headers. | ~4h | Medium — referrer leak on shared devices |
+| **B. Opaque token in URL, hashed at rest** | Server stores only hash. URL token alone is useless to attacker. | Slightly more code (hash on store + compare). | ~6h | Low — best practice |
+| **C. OTP code via email, no link** | No URL leak. Works without clicking a link. | Bad UX on mobile email clients. No atomic confirm step. | ~5h | Medium — UX friction |
+
+Recommendation: **B**. Standard, secure, modest extra cost. The `bcrypt`-style hash we already use for passwords can hash the token.
+
+> Tie-breaker (per *Decide at the latest responsible moment*): I've picked B, but if the user has a constraint that disqualifies B (e.g. "we use DynamoDB and don't want column additions"), we revisit.
+
+### Phase 7 — Failure-mode pass
+
+> 10 categories. Run all; flag ≥3 concrete probes.
+
+| Category | Probe | Mitigation |
+|---|---|---|
+| Empty input | User submits form with no email | Reject client-side + server-side |
+| Boundaries | Email with leading/trailing whitespace | Trim + lowercase before lookup |
+| Concurrency | Two parallel requests, one token consumed twice | Mark token used atomically (UPDATE ... WHERE used=false) |
+| Auth | User who never requested reset receives an email | Don't reveal whether email exists — return same success message regardless |
+| Injection | Token contains SQL/HTML chars | Tokens are random hex; we hash them, so we never query by raw token |
+| Sensitive data | Token in logs | Sanitize token from logs; never log query params |
+| Performance | Brute-force the 32-byte token | Token is 32 bytes (256 bits) — unguessable |
+| Backwards compat | Existing user without email | Reject gracefully; suggest contacting support |
+| Reversibility | User resets and immediately regrets | Already happens with normal password change; out of scope |
+| Observability | Reset attempts spike (attack?) | Add metric: reset request count, reset completion count, delta |
+
+That produced 10 probes — way more than 3 — and 1 metric (observability).
+
+### Phase 8 — Design presentation
+
+> 6 components, no code, sections approval.
+
+**Components:**
+1. **DB schema** — new `password_reset_tokens` table: `id`, `user_id`, `token_hash`, `expires_at`, `used_at`, `created_at`.
+2. **API** — `POST /forgot` (request), `POST /reset` (confirm), `GET /reset?token=...` (validate page).
+3. **Email template** — single template with reset URL.
+4. **UI** — `/forgot` page, `/reset` page; both reuse the existing form components.
+5. **Rate limit** — 3 requests / 15 min / IP, 3 requests / hour / email.
+6. **Tests** — happy path, expired token, reused token, wrong email (silent), rate limit, enumeration probe.
+
+User approves. No code yet.
+
+### Phase 9 — Spec write + self-review
+
+> Write spec to `docs/vigilantes/specs/...` with 5-item checklist.
+
+Spec is now in `docs/vigilantes/specs/2026-06-13-password-reset.md`. Self-review:
+- [x] No "TBD" / "fill in later" placeholders
+- [x] Every component from Phase 8 maps to a spec section
+- [x] Every failure-mode probe from Phase 7 is addressed
+- [x] Principles cited (Look before you leap, Make the implicit explicit, Test the boundaries)
+- [x] Acceptance criteria for the 6 test cases listed in Phase 8
+
+### Phase 10 — User review gate
+
+> 3 outcomes: approve, change, abandon.
+
+User reads spec, replies: "Approve. One change: add audit log for the reset event."
+
+I update the spec (add `audit_log` table write in the confirm step) and re-confirm. Approved.
+
+### Phase 11 — Transition to writing-plans
+
+> Handoff to writing-plans.
+
+"Spec approved. To build this, I'll invoke the writing-plans skill. In a fresh session (per the v2 writing-plans handoff), the agent will read this spec and produce a bite-sized implementation plan. Should I open that session now, or do you want to review the spec once more?"
+
+User: "Go."
+
+Terminal state. Brainstorming v2 is done for this feature.
+
+---
+
+## V2 anti-patterns: what NOT to do (real examples)
+
+> Anti-patterns from the SKILL.md, with concrete bad responses.
+
+| Anti-pattern | Bad response (do NOT do this) | Better response |
+|---|---|---|
+| "Let me ask a few questions" | "Before I start, can you tell me about your auth system?" | Read `src/auth/` first; cite what you found; ask only what's left. |
+| "Great idea!" | "Great idea! Let me build the reset flow." | "Two concerns before I scope this: (1) email enumeration risk if we reveal whether the email exists, (2) token in URL can leak via referrer. Want me to design with those in mind?" |
+| "I assume..." | "I assume you use bcrypt for passwords." | "Login uses bcrypt cost 12 at `src/auth/login.ts:42`. I'll match that for token hashing." |
+| "I cited all 10 principles" | Dump all 10 principles in one block | Cite 2-4 that genuinely apply to this phase. |
+| "Too simple to need design" | "It's a small feature, let me just code it." | Risk assessment in Phase 0 — auth surfaces are never "small." |
+| "12 clarifying questions" | Fire 10+ questions in one message | Cap at <7. Batch. Defer non-blockers. |
+| "5-option menu" | "Should we do email, SMS, security questions, authenticator, or password manager?" | 2-3 options. Compare. Recommend. |
+| "Not sure about failure modes" | Skip the failure-mode pass for "speed" | Run all 10 categories. Flag ≥3 concrete probes. |
+| "Let me start writing the plan" | Start coding before spec approval | Wait for Phase 10 user approval gate. |
+| "Just add a small thing" | "Oh also add 2FA while you're at it" | Scope creep — flag it. New feature = new brainstorming session. |
