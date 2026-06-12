@@ -1,14 +1,14 @@
 {
-  "name": "superpowers",
-  "displayName": "Superpowers",
-  "description": "Core skills library: TDD, debugging, collaboration patterns, and proven techniques",
-  "version": "5.1.0",
+  "name": "vigilantes",
+  "displayName": "Vigilantes",
+  "description": "A senior-dev coding agent methodology: brainstorming, planning, TDD, systematic debugging, code review, and collaboration workflows.",
+  "version": "2.0.0",
   "author": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "ELith03",
+    "url": "https://github.com/ELith03"
   },
-  "homepage": "https://github.com/obra/superpowers",
-  "repository": "https://github.com/obra/superpowers",
+  "homepage": "https://github.com/ELith03/vigilantes",
+  "repository": "https://github.com/ELith03/vigilantes",
   "license": "MIT",
   "keywords": [
     "skills",
@@ -16,7 +16,9 @@
     "debugging",
     "collaboration",
     "best-practices",
-    "workflows"
+    "workflows",
+    "senior-dev",
+    "methodology"
   ],
   "skills": "./skills/",
   "agents": "./agents/",

@@ -1,6 +1,6 @@
 {
-  "name": "superpowers",
-  "description": "Core skills library: TDD, debugging, collaboration patterns, and proven techniques",
-  "version": "5.1.0",
+  "name": "vigilantes",
+  "description": "A senior-dev coding agent methodology: brainstorming, planning, TDD, systematic debugging, code review, and collaboration workflows.",
+  "version": "2.0.0",
   "contextFileName": "GEMINI.md"
 }
