@@ -18,5 +18,6 @@
     "workflows",
     "senior-dev",
     "methodology"
-  ]
+  ],
+  "commands": "./commands/"
 }
