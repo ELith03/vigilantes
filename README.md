@@ -40,38 +40,30 @@ For the canonical step-by-step flow (brainstorming → writing-plans → TDD →
 
 ## Installation
 
-Vigilantes is not distributed through any AI agent plugin marketplace. You install it by cloning the repository and running the bootstrap script for your coding agent.
+Vigilantes is not distributed through any AI agent plugin marketplace. You install it by cloning the repository and running the bootstrap script.
 
 ### Prerequisites
 
 - Git
-- Your preferred coding agent (one of the supported harnesses below)
+- One or more supported coding agents installed (Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot CLI, Factory Droid, or OpenCode)
 
 ### Clone & Install
 
 ```bash
 git clone https://github.com/ELith03/vigilantes.git ~/.vigilantes
+bash ~/.vigilantes/scripts/install.sh
 ```
 
-Then run the install script for your harness:
+The script auto-detects which harnesses you have installed and wires up symlinks for all of them. Idempotent — safe to re-run.
 
-| Harness | Script |
-|---|---|
-| Claude Code | `bash ~/.vigilantes/scripts/install.sh claude` |
-| Codex CLI / Codex App | `bash ~/.vigilantes/scripts/install.sh codex` |
-| Factory Droid | `bash ~/.vigilantes/scripts/install.sh droid` |
-| Gemini CLI | `bash ~/.vigilantes/scripts/install.sh gemini` |
-| OpenCode | `bash ~/.vigilantes/scripts/install.sh opencode` |
-| Cursor | `bash ~/.vigilantes/scripts/install.sh cursor` |
-| GitHub Copilot CLI | `bash ~/.vigilantes/scripts/install.sh copilot` |
-
-On Windows, run the equivalent PowerShell script:
+On Windows:
 
 ```powershell
-& "~\vigilantes\scripts\install.ps1" -Harness opencode
+git clone https://github.com/ELith03/vigilantes.git $env:USERPROFILE\.vigilantes
+& "$env:USERPROFILE\.vigilantes\scripts\install.ps1"
 ```
 
-See the `scripts/` directory for details.
+Restart your harness after install.
 
 ## The Basic Workflow
 
