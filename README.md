@@ -1,142 +1,137 @@
 # Vigilantes
 
-Vigilantes is a complete software development methodology for your coding agents, built on top of a set of composable skills and some initial instructions that make sure your agent uses them.
+A senior-dev coding agent methodology. 15 composable skills that turn your agent into an engineer who reads first, probes assumptions, plans for failure, and tests the boundaries — not just the happy path.
 
-For a deeper overview of the methodology itself, see [METHODOLOGY.md](METHODOLOGY.md).
+See **[FLOW.md](./FLOW.md)** for the step-by-step workflow. See **[METHODOLOGY.md](./METHODOLOGY.md)** for the full skill catalog and principles.
 
 ## Quickstart
-
-Give your agent Vigilantes by running the install script for your harness. See [Installation](#installation) below.
-
-## How it works
-
-It starts from the moment you fire up your coding agent. As soon as it sees that you're building something, it *doesn't* just jump into trying to write code. Instead, it steps back and asks you what you're really trying to do. 
-
-Once it's teased a spec out of the conversation, it shows it to you in chunks short enough to actually read and digest. 
-
-After you've signed off on the design, your agent puts together an implementation plan that's clear enough for an enthusiastic junior engineer with poor taste, no judgement, no project context, and an aversion to testing to follow. It emphasizes true red/green TDD, YAGNI (You Aren't Gonna Need It), and DRY. 
-
-Next up, once you say "go", it launches a *subagent-driven-development* process, having agents work through each engineering task, inspecting and reviewing their work, and continuing forward. It's not uncommon for Claude to be able to work autonomously for a couple hours at a time without deviating from the plan you put together.
-
-There's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has that edge.
-
-
-## About this fork
-
-This is a fork of [obra/superpowers](https://github.com/obra/superpowers). Vigilantes extends and upgrades the original Superpowers methodology to make it more senior-dev-oriented — particularly in the brainstorming, principles, and planning skills. This fork is maintained by [ELith03](https://github.com/ELith03).
-
-If you find Vigilantes valuable, please also check out the original Superpowers project. The original project's approach to coding-agent methodology has been the foundation for this work, and we encourage supporting both projects.
-
-## How this fork differs
-
-Vigilantes v2.0.0 is the senior-dev-oriented rebrand of upstream Superpowers. The three additions over the original methodology:
-
-1. **A 10-principle library** — shared senior-dev principles (`Look before you leap`, `Smallest reversible change`, `Test the boundaries not the path`, etc.) cited inline by the brainstorming and writing-plans skills. See `METHODOLOGY.md` for the full library.
-2. **An 11-phase brainstorming skill** — read-first, probe, push back when warranted, failure-mode pass, then spec. The original skill was 4 phases; the v2 skill is 11. See `skills/brainstorming/SKILL.md`.
-3. **An 8-phase writing-plans skill** — risk-class-driven plan structure, 10-item self-review, explicit handoff. The original skill was a flat step list; v2 scales plan depth to the change's risk class. See `skills/writing-plans/SKILL.md`.
-
-For the canonical step-by-step flow (brainstorming → writing-plans → TDD → review → finish), see **[FLOW.md](./FLOW.md)**. For an overview of the methodology and the full skill catalog, see **[METHODOLOGY.md](./METHODOLOGY.md)**.
-
-
-## Installation
-
-Vigilantes is not distributed through any AI agent plugin marketplace. You install it by cloning the repository and running the bootstrap script.
-
-### Prerequisites
-
-- Git
-- One or more supported coding agents installed (Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot CLI, Factory Droid, or OpenCode)
-
-### Clone & Install
 
 ```bash
 git clone https://github.com/ELith03/vigilantes.git ~/.vigilantes
 bash ~/.vigilantes/scripts/install.sh
 ```
 
-The script auto-detects which harnesses you have installed and wires up symlinks for all of them. Idempotent — safe to re-run.
+The script auto-detects your installed coding agents and wires them up. Restart your agent. That's it.
 
-On Windows:
+Once installed, type `/vigilantes:start` (or invoke the `vigilantes-start` skill) to begin.
+
+## How it works
+
+The agent doesn't jump into code. It reads the codebase first, probes to find the real problem, explores 2-3 approaches with tradeoffs, and runs a 10-category failure-mode pass. Only then does it produce a design spec for you to approve.
+
+After approval, it writes a bite-sized implementation plan — every step has exact file paths, complete code, a verification line, and a rollback line if the change isn't reversible. Then it dispatches subagents to execute each task with two-stage review (spec compliance, then code quality).
+
+The skills trigger automatically. You don't invoke them manually — the agent knows when to use each one.
+
+## About this fork
+
+This is a fork of [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent. Vigilantes adds:
+
+1. **A 10-principle library** — shared senior-dev principles (`Look before you leap`, `Smallest reversible change`, `Test the boundaries not the path`, etc.) inlined into the brainstorming and writing-plans skills.
+2. **An 11-phase brainstorming skill (v2)** — read-first, probe, push back when warranted, failure-mode pass, then spec. The original was 4 phases.
+3. **An 8-phase writing-plans skill (v2)** — risk-class-driven plan structure, 10-item self-review, explicit handoff. The original was a flat step list.
+4. **A state-aware entry point** — `/vigilantes:start` detects where you left off (spec? plan? worktree?) and routes you to the next step, or shows a 3-option menu.
+
+## Installation
+
+### Prerequisites
+
+- Git
+- One or more supported coding agents installed
+
+### Unix (macOS / Linux)
+
+```bash
+git clone https://github.com/ELith03/vigilantes.git ~/.vigilantes
+bash ~/.vigilantes/scripts/install.sh
+```
+
+### Windows
 
 ```powershell
 git clone https://github.com/ELith03/vigilantes.git $env:USERPROFILE\.vigilantes
 & "$env:USERPROFILE\.vigilantes\scripts\install.ps1"
 ```
 
-Restart your harness after install.
+The installer auto-detects which harnesses you have and symlinks vigilantes into each one. Idempotent — safe to re-run.
 
-## The Basic Workflow
+Restart your harness after install. Verify by asking your agent "tell me about vigilantes."
 
-1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
+## Supported harnesses
 
-2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
+| Harness | Install detection | Slash command |
+|---|---|---|
+| Claude Code | `claude` in PATH | `/vigilantes:start` |
+| Cursor | `cursor` in PATH | `/vigilantes:start` |
+| Codex CLI / Codex App | `codex` in PATH | Invoke `vigilantes-start` skill |
+| Gemini CLI | `gemini` in PATH | Invoke `vigilantes-start` skill |
+| GitHub Copilot CLI | `copilot` in PATH | Invoke `vigilantes-start` skill |
+| Factory Droid | `droid` in PATH | Invoke `vigilantes-start` skill |
+| OpenCode | `~/.config/opencode` exists | Invoke `vigilantes-start` skill |
 
-3. **writing-plans** - Activates with approved design. Breaks work into bite-sized tasks (2-5 minutes each). Every task has exact file paths, complete code, verification steps.
+All seven harnesses get the same skills and methodology. Claude Code and Cursor also get the `/vigilantes:start` slash command for faster entry.
 
-4. **subagent-driven-development** or **executing-plans** - Activates with plan. Dispatches fresh subagent per task with two-stage review (spec compliance, then code quality), or executes in batches with human checkpoints.
+## The skills
 
-5. **test-driven-development** - Activates during implementation. Enforces RED-GREEN-REFACTOR: write failing test, watch it fail, write minimal code, watch it pass, commit. Deletes code written before tests.
+| Skill | When it activates |
+|---|---|
+| **vigilantes-start** | Fresh session — detects project state, routes to next step or shows menu |
+| **brainstorming** (v2) | Before writing code — 11-phase design intake, produces a spec |
+| **writing-plans** (v2) | With an approved spec — writes a bite-sized implementation plan |
+| **test-driven-development** | During implementation — enforces RED-GREEN-REFACTOR |
+| **subagent-driven-development** | With an approved plan — dispatches subagents per task with two-stage review |
+| **executing-plans** | Fallback executor for harnesses without subagent support |
+| **requesting-code-review** | Between tasks — reviews against the plan |
+| **receiving-code-review** | When review feedback arrives — verify, don't blindly implement |
+| **using-git-worktrees** | Before starting feature work — isolated workspace per change |
+| **dispatching-parallel-agents** | When facing 2+ independent tasks |
+| **systematic-debugging** | When hitting a bug — 4-phase root cause process |
+| **verification-before-completion** | Before claiming work is done — evidence before assertions |
+| **finishing-a-development-branch** | When implementation is complete — merge, PR, or cleanup |
+| **writing-skills** | When creating or editing skills — TDD for process documentation |
+| **using-vigilantes** | Auto-injected at session start — teaches the agent how to use skills |
 
-6. **requesting-code-review** - Activates between tasks. Reviews against plan, reports issues by severity. Critical issues block progress.
+For full descriptions, see **[METHODOLOGY.md](./METHODOLOGY.md)**.
 
-7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
+## Principles
 
-**The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
+The 10 senior-dev principles are inlined into the two v2 skills that cite them (brainstorming and writing-plans). They are the "voice" of the methodology:
 
-## What's Inside
-
-### Skills Library
-
-**Testing**
-- **test-driven-development** - RED-GREEN-REFACTOR cycle (includes testing anti-patterns reference)
-
-**Debugging**
-- **systematic-debugging** - 4-phase root cause process (includes root-cause-tracing, defense-in-depth, condition-based-waiting techniques)
-- **verification-before-completion** - Ensure it's actually fixed
-
-**Collaboration** 
-- **brainstorming** - Socratic design refinement
-- **writing-plans** - Detailed implementation plans
-- **executing-plans** - Batch execution with checkpoints
-- **dispatching-parallel-agents** - Concurrent subagent workflows
-- **requesting-code-review** - Pre-review checklist
-- **receiving-code-review** - Responding to feedback
-- **using-git-worktrees** - Parallel development branches
-- **finishing-a-development-branch** - Merge/PR decision workflow
-- **subagent-driven-development** - Fast iteration with two-stage review (spec compliance, then code quality)
-
-**Meta**
-- **writing-skills** - Create new skills following best practices (includes testing methodology)
-- **using-vigilantes** - Introduction to the skills system
-
-## Philosophy
-
-- **Test-Driven Development** - Write tests first, always
-- **Systematic over ad-hoc** - Process over guessing
-- **Complexity reduction** - Simplicity as primary goal
-- **Evidence over claims** - Verify before declaring success
-
-Read [the original Superpowers release announcement](https://blog.fsck.com/2025/10/09/superpowers/).
-
-## Contributing
-
-The general contribution process for Vigilantes is below. Keep in mind that we don't generally accept contributions of new skills and that any updates to skills must work across all of the coding agents we support.
-
-1. Fork the repository
-2. Switch to the 'dev' branch
-3. Create a branch for your work
-4. Follow the `writing-skills` skill for creating and testing new and modified skills
-5. Submit a PR, being sure to fill in the pull request template.
-
-See `skills/writing-skills/SKILL.md` for the complete guide.
+1. **Look before you leap** — read the codebase before asking questions
+2. **Distinguish signal from assumption** — name what's verified vs guessed
+3. **Trace every claim** — every assertion cites a source
+4. **Question the question** — probe the real problem behind the stated one
+5. **Smallest reversible change** — prefer incremental, undoable moves
+6. **Make the implicit explicit** — surface tradeoffs, constraints, assumptions
+7. **Push back when warranted** — challenge respectfully with evidence
+8. **Test the boundaries, not the path** — probe edge cases and failure modes
+9. **Optimize for the next reader** — clarity over cleverness
+10. **Decide at the latest responsible moment** — delay commitment while keeping options open
 
 ## Updating
 
-Vigilantes updates are somewhat coding-agent dependent, but are often automatic.
+Re-run the install script to pull the latest main branch:
 
-## License
+```bash
+bash ~/.vigilantes/scripts/install.sh
+```
 
-MIT License - see LICENSE file for details
+Or manually:
+
+```bash
+cd ~/.vigilantes && git pull --ff-only origin main
+```
+
+## Contributing
+
+We don't generally accept new skills — the skill set is deliberately capped. Bug fixes and harness compatibility improvements are welcome.
+
+1. Fork the repository
+2. Create a branch from `main`
+3. Follow the `writing-skills` skill for testing changes
+4. Submit a PR with the pull request template filled in
+
+See `skills/writing-skills/SKILL.md` for the complete guide.
 
 ## Community
 
