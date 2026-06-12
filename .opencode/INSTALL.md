@@ -107,4 +107,4 @@ When skills reference Claude Code tools:
 ## Getting Help
 
 - Report issues: https://github.com/ELith03/vigilantes/issues
-- Full documentation: https://github.com/ELith03/vigilantes/blob/main/docs/README.opencode.md
+- Full documentation: https://github.com/ELith03/vigilantes/blob/main/METHODOLOGY.md

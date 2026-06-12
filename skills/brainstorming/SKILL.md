@@ -13,16 +13,67 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 
 ## Principles cited in this skill
 
-- **Look before you leap** — read the codebase before asking the first clarifying question.
-- **Distinguish signal from assumption** — name what's verified vs guessed.
-- **Trace every claim** — every assertion cites a file:line or an explicit assumption.
-- **Question the question** — probe the real problem behind the stated one.
-- **Make the implicit explicit** — surface tradeoffs, constraints, assumptions.
-- **Push back when warranted** — challenge respectfully with evidence.
-- **Test the boundaries, not the path** — probe edge cases + failure modes.
-- **Decide at the latest responsible moment** — delay commitment while keeping options open.
+The full definitions are inlined below. Skills cite 2-4 of these per brainstorm, not all 10.
 
-(For the full principle definitions, see `docs/principles/README.md`.)
+### 1. Look before you leap
+
+**Statement:** Research the codebase and data model before acting on a change.
+**Why:** Unverified assumptions are the most expensive kind of bug — they cost an implementation cycle to discover.
+**Anti-pattern:** "Let me ask a few questions to understand the codebase." (Ask second, read first.)
+
+### 2. Distinguish signal from assumption
+
+**Statement:** Name what's verified vs what's guessed. Both are allowed; the difference must be visible.
+**Why:** A team that can't tell verified from assumed fact will spend meetings arguing about both in the same voice.
+**Anti-pattern:** "I think the system does X." (No source. Same voice as a verified claim.)
+
+### 3. Trace every claim
+
+**Statement:** Every assertion cites a source — a file:line, a doc section, a prior decision, or an explicit assumption.
+**Why:** Tracing is what lets a future reviewer verify or refute. Untraced claims become folklore.
+**Anti-pattern:** "The system works that way" (no source) vs. "I read `src/auth/handler.ts:42`; the system works that way."
+
+### 4. Question the question
+
+**Statement:** Probe the real problem behind the stated one before designing a solution.
+**Why:** Users describe solutions, not problems. Solving the wrong problem with the right technique is still failure.
+**Anti-pattern:** "User asked for X. Build X." (No probe of the underlying problem.)
+
+### 5. Smallest reversible change
+
+**Statement:** Prefer incremental, undoable moves over big-bang rewrites.
+**Why:** Reversible changes lower the cost of being wrong. The cost of an unrevertable mistake is asymmetric.
+**Anti-pattern:** "Let me rewrite the whole module while I'm in there." (Scope creep, irreversibly.)
+
+### 6. Make the implicit explicit
+
+**Statement:** Surface tradeoffs, constraints, and assumptions; don't leave them implicit.
+**Why:** Implicit decisions can't be reviewed, can't be changed, and surprise the next person. Explicit decisions are gifts to the team.
+**Anti-pattern:** A design that says "we'll use approach X" without naming the alternatives it beat.
+
+### 7. Push back when warranted
+
+**Statement:** Challenge respectfully with evidence when an approach has clear issues. Defer when the other party has more context.
+**Why:** "Yes-man" agents ship bad designs. Contrarian agents slow teams down. The right behavior is calibrated pushback.
+**Anti-pattern:** "Great idea, let's do that!" (no scrutiny) OR "Actually, that won't work because..." (contrarian for sport).
+
+### 8. Test the boundaries, not the path
+
+**Statement:** Probe edge cases, failure modes, and adversarial inputs — not just the happy path.
+**Why:** Happy-path correctness is the cheapest property to achieve. Robustness is the property that matters in production.
+**Anti-pattern:** A test suite that exercises `add(2, 3)` and stops.
+
+### 9. Optimize for the next reader
+
+**Statement:** Clarity over cleverness. Code, docs, and messages should be readable by someone who hasn't seen the context.
+**Why:** Code is read more than written. The next reader (often future-you) pays the cost of clever shortcuts.
+**Anti-pattern:** A one-liner that uses five advanced features to replace three readable lines.
+
+### 10. Decide at the latest responsible moment
+
+**Statement:** Delay commitment while keeping options open. Commit only when the cost of waiting exceeds the cost of locking in.
+**Why:** Early commitments foreclose options you didn't know you'd want. Late commitments keep flexibility — but only if you haven't painted yourself into a corner.
+**Anti-pattern:** Picking a database on day 1 because "we need to pick one", before any feature has constraints.
 
 ## The 11 phases
 
@@ -200,7 +251,7 @@ After each section, ask: "Does this section look right so far?"
 
 Write the validated design to `docs/vigilantes/specs/YYYY-MM-DD-<topic>-design.md` and commit. (User preferences for spec location override this default.)
 
-The spec template is defined in `docs/vigilantes/specs/_template.md` if it exists; otherwise follow the structure from Phase 8 (problem, principles, approach, failure modes, open questions, out of scope).
+**Use the template at `docs/vigilantes/specs/_template.md` as the starting structure** — copy it to the new spec path, then fill in the sections. Do not invent a new structure; do not skip sections. The template is the contract. If the template is missing, follow the structure from Phase 8 (problem, principles, approach, failure modes, open questions, out of scope).
 
 **Self-review checklist (run inline, fix before showing user):**
 

@@ -2,6 +2,8 @@
 
 Vigilantes is a complete software development methodology for your coding agents, built on top of a set of composable skills and some initial instructions that make sure your agent uses them.
 
+For a deeper overview of the methodology itself, see [METHODOLOGY.md](METHODOLOGY.md).
+
 ## Quickstart
 
 Give your agent Vigilantes by running the install script for your harness. See [Installation](#installation) below.
@@ -59,7 +61,7 @@ On Windows, run the equivalent PowerShell script:
 & "~\vigilantes\scripts\install.ps1" -Harness opencode
 ```
 
-See the `scripts/` directory or per-harness docs for details.
+See the `scripts/` directory for details.
 
 ## The Basic Workflow
 

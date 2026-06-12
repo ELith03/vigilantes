@@ -10,7 +10,7 @@ The methodology is "senior-dev in writing" — every step is supposed to feel li
 
 ## Origin
 
-Vigilantes is a fork of [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent / Prime Radiant (MIT). The rebrand and v2 additions are by ELith03. See [the README](../README.md) for the full fork context.
+Vigilantes is a fork of [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent / Prime Radiant (MIT). The rebrand and v2 additions are by ELith03. See [the README](./README.md) for the full fork context.
 
 ## The 10 principles
 
@@ -29,7 +29,7 @@ Every skill in vigilantes can cite these. They are the "voice" of the methodolog
 | 9 | **Optimize for the next reader** | Write for the implementer who has zero context. |
 | 10 | **Decide at the latest responsible moment** | Defer non-trivial decisions to the latest step that can still make them. |
 
-Full definitions: [`docs/principles/`](./principles/). 6 of the 10 are cited by the brainstorming skill; 6 by the writing-plans skill. Skills cite 2-4 each, not all 10.
+Full definitions are inlined in the two skills that cite them — `skills/brainstorming/SKILL.md` and `skills/writing-plans/SKILL.md`. Skills cite 2-4 each, not all 10.
 
 ## The 14 skills
 
@@ -62,7 +62,7 @@ Full definitions: [`docs/principles/`](./principles/). 6 of the 10 are cited by 
 8. **Phase 7 — User review gate** — wait for explicit approval.
 9. **Phase 8 — Handoff** — save to `docs/vigilantes/plans/`, return path, do not implement.
 
-Full spec: [`docs/vigilantes/specs/2026-06-12-writing-plans-v2.md`](./specs/2026-06-12-writing-plans-v2.md).
+Full spec lives in the skill itself: [`skills/writing-plans/SKILL.md`](./skills/writing-plans/SKILL.md).
 
 ## The 11-phase brainstorming v2 (sketch)
 
@@ -79,7 +79,7 @@ Full spec: [`docs/vigilantes/specs/2026-06-12-writing-plans-v2.md`](./specs/2026
 11. **Phase 10 — User review gate** — 3 outcomes (approve / change / abandon).
 12. **Phase 11 — Transition to writing-plans** — handoff to the planner.
 
-Full spec: [`docs/vigilantes/specs/2026-06-12-brainstorming-v2.md`](./specs/2026-06-12-brainstorming-v2.md).
+Full spec lives in the skill itself: [`skills/brainstorming/SKILL.md`](./skills/brainstorming/SKILL.md).
 
 ## Install
 
@@ -95,7 +95,7 @@ On Windows:
 irm https://raw.githubusercontent.com/ELith03/vigilantes/main/scripts/install.ps1 | iex
 ```
 
-Per-harness docs: [`docs/INSTALL.<harness>.md`](../INSTALL.claude.md) (claude, codex, cursor, copilot, droid, gemini, opencode).
+Per-harness install is the same command for all 7; see the [README](./README.md#installation).
 
 The script clones to `~/.vigilantes/` and wires up a symlink at the harness's plugin path. Idempotent. Restart the harness after install.
 
@@ -107,14 +107,13 @@ The script clones to `~/.vigilantes/` and wires up a symlink at the harness's pl
 
 ## Specs and plans
 
-- [Rebrand spec](./specs/2026-06-12-vigilantes-rebrand.md)
-- [Roadmap spec](./specs/2026-06-12-vigilantes-methodology-roadmap.md)
-- [Principles Library spec](./specs/2026-06-12-principles-library.md)
-- [Brainstorming v2 spec](./specs/2026-06-12-brainstorming-v2.md)
-- [writing-plans v2 spec](./specs/2026-06-12-writing-plans-v2.md)
-- Implementation plans: [`docs/vigilantes/plans/`](./plans/)
-- Verification logs: in the same `specs/` folder, `-VERIFICATION.md` suffix.
+The v2 methodology skills are self-contained — each is the source of truth for its own process. The plugin no longer ships historical design specs or implementation plans; the methodology is documented in the skills themselves:
+
+- [Brainstorming v2](./skills/brainstorming/SKILL.md) — 11-phase design intake
+- [writing-plans v2](./skills/writing-plans/SKILL.md) — 8-phase plan authoring
+
+`docs/vigilantes/specs/` and `docs/vigilantes/plans/` still exist as **template directories** for user projects the agent helps with — the `brainstorming` and `writing-plans` skills scaffold new files there from `_template.md`. See [docs/README.md](./docs/README.md) for the templates-only contract.
 
 ## License
 
-MIT. Original copyright: Jesse Vincent. Fork additions: ELith03. See [LICENSE](../../LICENSE).
+MIT. Original copyright: Jesse Vincent. Fork additions: ELith03. See [LICENSE](./LICENSE).

@@ -11,14 +11,67 @@ The planner's job ends at handoff. Implementation is a separate session.
 
 ## Principles cited in this skill
 
-- **#1 Look before you leap** — the design cited file:line; the plan keeps that discipline at the step level.
-- **#5 Smallest reversible change** — steps are ordered by reversibility; non-reversible steps carry a rollback line.
-- **#6 Make the implicit explicit** — 2-3 approaches from the design are reflected in the plan's task statement; rejected alternatives are noted.
-- **#8 Test the boundaries, not the path** — every behavior step has a paired test step; risky steps name failure modes.
-- **#9 Optimize for the next reader** — the plan is written for an implementer who has zero context.
-- **#10 Decide at the latest responsible moment** — non-trivial decisions are deferred to the latest step that can still make them.
+The full definitions are inlined below. Plans cite 2-4 of these at the top, not all 10.
 
-(For full principle definitions, see `docs/principles/README.md`.)
+### 1. Look before you leap
+
+**Statement:** Research the codebase and data model before acting on a change.
+**Why:** Unverified assumptions are the most expensive kind of bug — they cost an implementation cycle to discover.
+**Anti-pattern:** "Let me ask a few questions to understand the codebase." (Ask second, read first.)
+
+### 2. Distinguish signal from assumption
+
+**Statement:** Name what's verified vs what's guessed. Both are allowed; the difference must be visible.
+**Why:** A team that can't tell verified from assumed fact will spend meetings arguing about both in the same voice.
+**Anti-pattern:** "I think the system does X." (No source. Same voice as a verified claim.)
+
+### 3. Trace every claim
+
+**Statement:** Every assertion cites a source — a file:line, a doc section, a prior decision, or an explicit assumption.
+**Why:** Tracing is what lets a future reviewer verify or refute. Untraced claims become folklore.
+**Anti-pattern:** "The system works that way" (no source) vs. "I read `src/auth/handler.ts:42`; the system works that way."
+
+### 4. Question the question
+
+**Statement:** Probe the real problem behind the stated one before designing a solution.
+**Why:** Users describe solutions, not problems. Solving the wrong problem with the right technique is still failure.
+**Anti-pattern:** "User asked for X. Build X." (No probe of the underlying problem.)
+
+### 5. Smallest reversible change
+
+**Statement:** Prefer incremental, undoable moves over big-bang rewrites.
+**Why:** Reversible changes lower the cost of being wrong. The cost of an unrevertable mistake is asymmetric.
+**Anti-pattern:** "Let me rewrite the whole module while I'm in there." (Scope creep, irreversibly.)
+
+### 6. Make the implicit explicit
+
+**Statement:** Surface tradeoffs, constraints, and assumptions; don't leave them implicit.
+**Why:** Implicit decisions can't be reviewed, can't be changed, and surprise the next person. Explicit decisions are gifts to the team.
+**Anti-pattern:** A design that says "we'll use approach X" without naming the alternatives it beat.
+
+### 7. Push back when warranted
+
+**Statement:** Challenge respectfully with evidence when an approach has clear issues. Defer when the other party has more context.
+**Why:** "Yes-man" agents ship bad designs. Contrarian agents slow teams down. The right behavior is calibrated pushback.
+**Anti-pattern:** "Great idea, let's do that!" (no scrutiny) OR "Actually, that won't work because..." (contrarian for sport).
+
+### 8. Test the boundaries, not the path
+
+**Statement:** Probe edge cases, failure modes, and adversarial inputs — not just the happy path.
+**Why:** Happy-path correctness is the cheapest property to achieve. Robustness is the property that matters in production.
+**Anti-pattern:** A test suite that exercises `add(2, 3)` and stops.
+
+### 9. Optimize for the next reader
+
+**Statement:** Clarity over cleverness. Code, docs, and messages should be readable by someone who hasn't seen the context.
+**Why:** Code is read more than written. The next reader (often future-you) pays the cost of clever shortcuts.
+**Anti-pattern:** A one-liner that uses five advanced features to replace three readable lines.
+
+### 10. Decide at the latest responsible moment
+
+**Statement:** Delay commitment while keeping options open. Commit only when the cost of waiting exceeds the cost of locking in.
+**Why:** Early commitments foreclose options you didn't know you'd want. Late commitments keep flexibility — but only if you haven't painted yourself into a corner.
+**Anti-pattern:** Picking a database on day 1 because "we need to pick one", before any feature has constraints.
 
 ## The 8 phases
 
@@ -133,6 +186,8 @@ Save the plan to a stable path:
 ```
 docs/vigilantes/plans/YYYY-MM-DD-<feature-or-task>.md
 ```
+
+**Use the template at `docs/vigilantes/plans/_template.md` as the starting structure** — copy it to the new plan path, then fill in the sections. The template is the contract for what a plan looks like; do not invent a new structure.
 
 Return the path to the user. Implementation is a separate session. If the user asks the planner to implement, that is a *new* session that *reads* the plan; the planner's job ended at handoff.
 
