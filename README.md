@@ -27,6 +27,16 @@ This is a fork of [obra/superpowers](https://github.com/obra/superpowers). Vigil
 
 If you find Vigilantes valuable, please also check out the original Superpowers project. The original project's approach to coding-agent methodology has been the foundation for this work, and we encourage supporting both projects.
 
+## How this fork differs
+
+Vigilantes v2.0.0 is the senior-dev-oriented rebrand of upstream Superpowers. The three additions over the original methodology:
+
+1. **A 10-principle library** — shared senior-dev principles (`Look before you leap`, `Smallest reversible change`, `Test the boundaries not the path`, etc.) cited inline by the brainstorming and writing-plans skills. See `METHODOLOGY.md` for the full library.
+2. **An 11-phase brainstorming skill** — read-first, probe, push back when warranted, failure-mode pass, then spec. The original skill was 4 phases; the v2 skill is 11. See `skills/brainstorming/SKILL.md`.
+3. **An 8-phase writing-plans skill** — risk-class-driven plan structure, 10-item self-review, explicit handoff. The original skill was a flat step list; v2 scales plan depth to the change's risk class. See `skills/writing-plans/SKILL.md`.
+
+For the canonical step-by-step flow (brainstorming → writing-plans → TDD → review → finish), see **[FLOW.md](./FLOW.md)**. For an overview of the methodology and the full skill catalog, see **[METHODOLOGY.md](./METHODOLOGY.md)**.
+
 
 ## Installation
 
@@ -140,6 +150,4 @@ MIT License - see LICENSE file for details
 
 Vigilantes is built by [ELith03](https://github.com/ELith03), forked from the original Superpowers methodology.
 
-- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Vigilantes
 - **Issues**: https://github.com/ELith03/vigilantes/issues
-- **Release announcements**: [Sign up](https://github.com/ELith03/vigilantes/releases) to get notified about new versions
