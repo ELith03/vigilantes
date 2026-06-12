@@ -1,10 +1,10 @@
-# Superpowers
+# Vigilantes
 
-Superpowers is a complete software development methodology for your coding agents, built on top of a set of composable skills and some initial instructions that make sure your agent uses them.
+Vigilantes is a complete software development methodology for your coding agents, built on top of a set of composable skills and some initial instructions that make sure your agent uses them.
 
 ## Quickstart
 
-Give your agent Superpowers: [Claude Code](#claude-code), [Codex CLI](#codex-cli), [Codex App](#codex-app), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [OpenCode](#opencode), [Cursor](#cursor), [GitHub Copilot CLI](#github-copilot-cli).
+Give your agent Vigilantes: [Claude Code](#claude-code), [Codex CLI](#codex-cli), [Codex App](#codex-app), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [OpenCode](#opencode), [Cursor](#cursor), [GitHub Copilot CLI](#github-copilot-cli).
 
 ## How it works
 
@@ -16,42 +16,40 @@ After you've signed off on the design, your agent puts together an implementatio
 
 Next up, once you say "go", it launches a *subagent-driven-development* process, having agents work through each engineering task, inspecting and reviewing their work, and continuing forward. It's not uncommon for Claude to be able to work autonomously for a couple hours at a time without deviating from the plan you put together.
 
-There's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has Superpowers.
+There's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has that edge.
 
 
-## Sponsorship
+## About this fork
 
-If Superpowers has helped you do stuff that makes money and you are so inclined, I'd greatly appreciate it if you'd consider [sponsoring my opensource work](https://github.com/sponsors/obra).
+This is a fork of [obra/superpowers](https://github.com/obra/superpowers). Vigilantes extends and upgrades the original Superpowers methodology to make it more senior-dev-oriented — particularly in the brainstorming, principles, and planning skills. This fork is maintained by [ELith03](https://github.com/ELith03).
 
-Thanks! 
-
-- Jesse
+If you find Vigilantes valuable, please also check out the original Superpowers project. The original project's approach to coding-agent methodology has been the foundation for this work, and we encourage supporting both projects.
 
 
 ## Installation
 
-Installation differs by harness. If you use more than one, install Superpowers separately for each one.
+Installation differs by harness. If you use more than one, install Vigilantes separately for each one.
 
 ### Claude Code
 
-Superpowers is available via the [official Claude plugin marketplace](https://claude.com/plugins/superpowers)
+Vigilantes is available via git — see install instructions below
 
 #### Official Marketplace
 
 - Install the plugin from Anthropic's official marketplace:
 
   ```bash
-  /plugin install superpowers@claude-plugins-official
+  See git-based install below (no marketplace)
   ```
 
-#### Superpowers Marketplace
+#### Vigilantes Marketplace
 
-The Superpowers marketplace provides Superpowers and some other related plugins for Claude Code.
+The Vigilantes marketplace provides Vigilantes and some other related plugins for Claude Code.
 
 - Register the marketplace:
 
   ```bash
-  /plugin marketplace add obra/superpowers-marketplace
+  /plugin marketplace add ELith03/vigilantes-marketplace
   ```
 
 - Install the plugin from this marketplace:
@@ -62,7 +60,7 @@ The Superpowers marketplace provides Superpowers and some other related plugins 
 
 ### Codex CLI
 
-Superpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
+Vigilantes is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
 
 - Open the plugin search interface:
 
@@ -70,7 +68,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
   /plugins
   ```
 
-- Search for Superpowers:
+- Search for Vigilantes:
 
   ```bash
   superpowers
@@ -80,18 +78,18 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 
 ### Codex App
 
-Superpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
+Vigilantes is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
 
 - In the Codex app, click on Plugins in the sidebar.
-- You should see `Superpowers` in the Coding section.
-- Click the `+` next to Superpowers and follow the prompts.
+- You should see `Vigilantes` in the Coding section.
+- Click the `+` next to Vigilantes and follow the prompts.
 
 ### Factory Droid
 
 - Register the marketplace:
 
   ```bash
-  droid plugin marketplace add https://github.com/obra/superpowers
+  droid plugin marketplace add https://github.com/ELith03/vigilantes
   ```
 
 - Install the plugin:
@@ -105,7 +103,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 - Install the extension:
 
   ```bash
-  gemini extensions install https://github.com/obra/superpowers
+  gemini extensions install https://github.com/ELith03/vigilantes
   ```
 
 - Update later:
@@ -116,13 +114,13 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 
 ### OpenCode
 
-OpenCode uses its own plugin install; install Superpowers separately even if you
+OpenCode uses its own plugin install; install Vigilantes separately even if you
 already use it in another harness.
 
 - Tell OpenCode:
 
   ```
-  Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.opencode/INSTALL.md
+  Fetch and follow instructions from https://raw.githubusercontent.com/ELith03/vigilantes/refs/heads/main/.opencode/INSTALL.md
   ```
 
 - Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
@@ -142,7 +140,7 @@ already use it in another harness.
 - Register the marketplace:
 
   ```bash
-  copilot plugin marketplace add obra/superpowers-marketplace
+  copilot plugin marketplace add ELith03/vigilantes-marketplace
   ```
 
 - Install the plugin:
@@ -202,11 +200,11 @@ already use it in another harness.
 - **Complexity reduction** - Simplicity as primary goal
 - **Evidence over claims** - Verify before declaring success
 
-Read [the original release announcement](https://blog.fsck.com/2025/10/09/superpowers/).
+Read [the original Superpowers release announcement](https://blog.fsck.com/2025/10/09/superpowers/).
 
 ## Contributing
 
-The general contribution process for Superpowers is below. Keep in mind that we don't generally accept contributions of new skills and that any updates to skills must work across all of the coding agents we support.
+The general contribution process for Vigilantes is below. Keep in mind that we don't generally accept contributions of new skills and that any updates to skills must work across all of the coding agents we support.
 
 1. Fork the repository
 2. Switch to the 'dev' branch
@@ -218,7 +216,7 @@ See `skills/writing-skills/SKILL.md` for the complete guide.
 
 ## Updating
 
-Superpowers updates are somewhat coding-agent dependent, but are often automatic.
+Vigilantes updates are somewhat coding-agent dependent, but are often automatic.
 
 ## License
 
@@ -226,8 +224,8 @@ MIT License - see LICENSE file for details
 
 ## Community
 
-Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
+Vigilantes is built by [ELith03](https://github.com/ELith03), forked from the original Superpowers methodology.
 
-- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
-- **Issues**: https://github.com/obra/superpowers/issues
-- **Release announcements**: [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions
+- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Vigilantes
+- **Issues**: https://github.com/ELith03/vigilantes/issues
+- **Release announcements**: [Sign up](https://github.com/ELith03/vigilantes/releases) to get notified about new versions
