@@ -1,5 +1,7 @@
 # Vigilantes Methodology
 
+> For the canonical step-by-step flow (brainstorm → plan → execute → review → finish), see **[FLOW.md](./FLOW.md)**.
+
 > A senior-dev coding agent methodology. Fork of [obra/superpowers](https://github.com/obra/superpowers) with three additions: a 10-principle library, a 11-phase brainstorming skill, and an 8-phase writing-plans skill. v2.0.0.
 
 ## What this is
