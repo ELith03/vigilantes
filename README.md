@@ -4,7 +4,7 @@ Vigilantes is a complete software development methodology for your coding agents
 
 ## Quickstart
 
-Give your agent Vigilantes: [Claude Code](#claude-code), [Codex CLI](#codex-cli), [Codex App](#codex-app), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [OpenCode](#opencode), [Cursor](#cursor), [GitHub Copilot CLI](#github-copilot-cli).
+Give your agent Vigilantes by running the install script for your harness. See [Installation](#installation) below.
 
 ## How it works
 
@@ -28,126 +28,38 @@ If you find Vigilantes valuable, please also check out the original Superpowers 
 
 ## Installation
 
-Installation differs by harness. If you use more than one, install Vigilantes separately for each one.
+Vigilantes is not distributed through any AI agent plugin marketplace. You install it by cloning the repository and running the bootstrap script for your coding agent.
 
-### Claude Code
+### Prerequisites
 
-Vigilantes is available via git — see install instructions below
+- Git
+- Your preferred coding agent (one of the supported harnesses below)
 
-#### Official Marketplace
+### Clone & Install
 
-- Install the plugin from Anthropic's official marketplace:
+```bash
+git clone https://github.com/ELith03/vigilantes.git ~/.vigilantes
+```
 
-  ```bash
-  See git-based install below (no marketplace)
-  ```
+Then run the install script for your harness:
 
-#### Vigilantes Marketplace
+| Harness | Script |
+|---|---|
+| Claude Code | `bash ~/.vigilantes/scripts/install.sh claude` |
+| Codex CLI / Codex App | `bash ~/.vigilantes/scripts/install.sh codex` |
+| Factory Droid | `bash ~/.vigilantes/scripts/install.sh droid` |
+| Gemini CLI | `bash ~/.vigilantes/scripts/install.sh gemini` |
+| OpenCode | `bash ~/.vigilantes/scripts/install.sh opencode` |
+| Cursor | `bash ~/.vigilantes/scripts/install.sh cursor` |
+| GitHub Copilot CLI | `bash ~/.vigilantes/scripts/install.sh copilot` |
 
-The Vigilantes marketplace provides Vigilantes and some other related plugins for Claude Code.
+On Windows, run the equivalent PowerShell script:
 
-- Register the marketplace:
+```powershell
+& "~\vigilantes\scripts\install.ps1" -Harness opencode
+```
 
-  ```bash
-  /plugin marketplace add ELith03/vigilantes-marketplace
-  ```
-
-- Install the plugin from this marketplace:
-
-  ```bash
-  /plugin install superpowers@superpowers-marketplace
-  ```
-
-### Codex CLI
-
-Vigilantes is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
-
-- Open the plugin search interface:
-
-  ```bash
-  /plugins
-  ```
-
-- Search for Vigilantes:
-
-  ```bash
-  superpowers
-  ```
-
-- Select `Install Plugin`.
-
-### Codex App
-
-Vigilantes is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
-
-- In the Codex app, click on Plugins in the sidebar.
-- You should see `Vigilantes` in the Coding section.
-- Click the `+` next to Vigilantes and follow the prompts.
-
-### Factory Droid
-
-- Register the marketplace:
-
-  ```bash
-  droid plugin marketplace add https://github.com/ELith03/vigilantes
-  ```
-
-- Install the plugin:
-
-  ```bash
-  droid plugin install superpowers@superpowers
-  ```
-
-### Gemini CLI
-
-- Install the extension:
-
-  ```bash
-  gemini extensions install https://github.com/ELith03/vigilantes
-  ```
-
-- Update later:
-
-  ```bash
-  gemini extensions update superpowers
-  ```
-
-### OpenCode
-
-OpenCode uses its own plugin install; install Vigilantes separately even if you
-already use it in another harness.
-
-- Tell OpenCode:
-
-  ```
-  Fetch and follow instructions from https://raw.githubusercontent.com/ELith03/vigilantes/refs/heads/main/.opencode/INSTALL.md
-  ```
-
-- Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
-
-### Cursor
-
-- In Cursor Agent chat, install from marketplace:
-
-  ```text
-  /add-plugin superpowers
-  ```
-
-- Or search for "superpowers" in the plugin marketplace.
-
-### GitHub Copilot CLI
-
-- Register the marketplace:
-
-  ```bash
-  copilot plugin marketplace add ELith03/vigilantes-marketplace
-  ```
-
-- Install the plugin:
-
-  ```bash
-  copilot plugin install superpowers@superpowers-marketplace
-  ```
+See the `scripts/` directory or per-harness docs for details.
 
 ## The Basic Workflow
 
@@ -191,7 +103,7 @@ already use it in another harness.
 
 **Meta**
 - **writing-skills** - Create new skills following best practices (includes testing methodology)
-- **using-superpowers** - Introduction to the skills system
+- **using-vigilantes** - Introduction to the skills system
 
 ## Philosophy
 

@@ -1,5 +1,16 @@
 # Vigilantes Release Notes
 
+## v2.0.0 — Fork rebrand (2026-06-12)
+
+Vigilantes 2.0.0 is a fork of [obra/superpowers](https://github.com/obra/superpowers) with a full rebrand to the Vigilantes identity. No functional methodology changes in this release.
+
+- **Rebrand**: All product references, plugin manifests, bootstrap hooks, documentation, and assets updated from "Superpowers" to "Vigilantes" (brand color #2563EB)
+- **New install method**: Bootstrap scripts for all 7 supported harnesses — no marketplace dependency
+- **Per-harness INSTALL docs**: Dedicated install instructions for each supported coding agent
+- **Fork context**: Credit and links to the upstream Superpowers project preserved throughout documentation
+
+See the [README](./README.md) for installation instructions and the fork rationale.
+
 ## v5.1.0 (2026-04-30)
 
 ### Removals

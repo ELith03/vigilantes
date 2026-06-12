@@ -1,5 +1,7 @@
 # Vigilantes — Contributor Guidelines
 
+**About this fork:** Vigilantes is a fork of [obra/superpowers](https://github.com/obra/superpowers) that upgrades and extends the original methodology. See the main [README](./README.md) for context on what changed and why. The original repo's contribution guidelines apply upstream; this fork has its own standards below.
+
 ## If You Are an AI Agent
 
 Stop. Read this section before doing anything.
