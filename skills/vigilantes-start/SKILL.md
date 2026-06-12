@@ -16,7 +16,7 @@ you haven't already in this session.
 ## Step 1 — Detect state
 
 Read the user's current working directory (CWD) and look for these signals.
-Use shell commands (or your host's file-listing tool) — do NOT read file
+Use `ls`/`Get-ChildItem` (or your host's file-listing tool) — names only, do NOT read file
 contents, only file names.
 
 | Signal | Where to look | Means |
@@ -34,6 +34,10 @@ as strings for display only — never execute them.
 
 Based on the detection, take one of these actions.
 
+**If both a spec and a plan exist:** treat as plan-exists (more advanced
+state — the user has already moved past the spec). Skip directly to the
+plan-exists branch below.
+
 **If a spec exists but no plan:**
 
 > I see a spec at `<path>`. Next step is `vigilantes:writing-plans` — want me
@@ -41,6 +45,8 @@ Based on the detection, take one of these actions.
 > `/vigilantes:writing-plans`.)
 
 Wait for the user. Do not invoke the skill on their behalf unless they say so.
+(Menu picks are explicit user intent — safe to invoke. Detected states are
+inferred from CWD — confirm first.)
 
 **If a plan exists:**
 
@@ -50,9 +56,10 @@ Wait for the user. Do not invoke the skill on their behalf unless they say so.
 
 **If in a worktree:**
 
-> You're in a worktree at `<path>`. The plan you're executing is probably
-> already in flight — continue with the executing skill, or ping me if you're
-> stuck.
+> You're in a worktree at `<path>`. If you can identify a plan at
+> `docs/vigilantes/plans/...`, resume it with `vigilantes:executing-plans` or
+> `vigilantes:subagent-driven-development`. If no plan is visible, treat this as
+> a fresh start (Step 3).
 
 **If nothing matches (fresh start):**
 
@@ -70,7 +77,7 @@ Show the 3-option menu (Step 3).
 >    what you're trying to do today) and I'll recommend the right starting
 >    skill.
 >
-> **3. Explain in deep / customize.** Show me the full skill library, link
+> **3. Explain in depth / customize.** Show me the full skill library, link
 >    you to `FLOW.md`, or walk through any specific skill. For building new
 >    skills, use `vigilantes:writing-skills`.
 >
@@ -99,3 +106,7 @@ Wait for the user's choice. Do not invoke any other skill until they pick.
   this one, defer to the running skill. Don't interrupt.
 - **Multi-project detection.** If the working dir has multiple spec files,
   show the most recent and ask which one they meant.
+- **Template scaffolding.** Spec templates live at
+  `docs/vigilantes/specs/_template.md` and `docs/vigilantes/plans/_template.md`.
+  The `brainstorming` and `writing-plans` skills will use them automatically —
+  you don't need to pre-populate.
